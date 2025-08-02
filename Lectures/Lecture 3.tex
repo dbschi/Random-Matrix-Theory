@@ -35,8 +35,41 @@ We can say statements about the top (resp. bottom) eigenvalue of $M$.
      $\mathbb{E}[M_{i,j}^4]<\infty$ is a sufficient and necessary condition for \[
     \lambda_{\max}/\sqrt{n} \to 2
     \]
-    almost surely.
+    almost surely. (The same is true for Marchenko Pastur distribution, top eigenvalue converges to the edge of the bulk almost surely)
 }
 \begin{remark}
     To see a non-example, any distribution for $M_{i,j}$ with a heavy polynomial tail. \todo python code
 \end{remark}
+
+\example[]{
+    Suppose we have a signal vector \[
+    X=\{\pm 1\}^n.
+    \]
+    Its corresponding matrix \[
+    XX^T
+    \]
+    has $n-1$ trivial eigenvalues and $1$ eigenvalue of $\sqrt{n}$. 
+    Now on top this we add a disturbance from a $n\times n$ Wigner matrix $M_n$ to get  \[
+    Y_n=\frac{1}{\sqrt{n}}(\alpha XX^T + M_n) ,
+    \]
+    where $\alpha$ is our signal strength.
+    Is it still possible to isolate/estimate $X$? (Think noise in finance affecting the covariance, can you still get a vector representing the market?) 
+
+}
+
+A simple estimator is to take the top eigenvector of $Y$. That is,\[
+\hat \Theta_s(Y_n) \defeq \sqrt{n} \arg\max_{\sigma\in S^{n-1}} \langle y\sigma , \sigma \rangle
+\]
+
+\theorem[]{Baik-Ben Arous-Péché transition}{
+    Let $M$ also have Gaussian entries $\sim N(0,1)$. Then there is a phase transition for the top eigenvalue and eignevector of $Y_n$.
+    \begin{itemize}
+        \item If $\alpha \leq 1$, then $\lambda_{\max}(Y_n)\to 2$.
+        \item If $\alpha > 1$ Then $\lambda_{\max}(Y_n) \to \alpha + \alpha ^{-1}>2$.
+    \end{itemize}
+    Moreover, in the regime $\alpha >1$, \[
+    \frac{\langle\hat\Theta_s(Y_n),X\rangle}{n}\to \sqrt{1-\frac{1}{\alpha^2}}.
+    \]
+
+    This is known as the BBP phase transition.
+}
