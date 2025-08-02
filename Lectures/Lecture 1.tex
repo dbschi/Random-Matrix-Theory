@@ -1,0 +1,186 @@
+\usection{Brief History of Random Matrix Theory}
+In 1928 Wishart was looking at the eigenvalues of the a covariance matrix. Let $M$ be an $n \times m$ matrix for $m$ independent observations of $n$ (centered)variables, and consider the covariance matrix $MM^T$. As we let $n,m\to \infty$ and $n/m\to \alpha$, then the histogram of eigenvalues converges to some distribution (we will make this precise). Around the same time (1930) Eugene Wigner was looking at the energy spectrum of the nuclei of heavy atoms (think emission spectrum). He argues that the behaviour of these atoms are so complex that we might model them as operating under a random Hamiltonian. Under this assumption, he proves the eigenvalues of symmetric (Hermitian) matrices also follow some distribution, known as the semicircle law.
+
+My first encounter with RMT is through analytic number theory. In 1970, Hugh Montgomery was studying the spacing of zeros of the Riemann Zeta function up to height $T$ on the real-half line \[
+\# \{\gamma_i-\gamma_{i-1} : b/\log T \leq \gamma_i-\gamma_{i-1}\leq a/\log T  \}
+\]
+
+Adjusted for the number of zeros $O(T\log T)$, the distribution of the spaces empirically follow the sine kernel
+\[
+\int_a^b 1-\left(\frac{\sin(\pi x)}{\pi x}\right)^2 dx
+\]
+This is exactly the pair correlation of the eigenvalues of a random Hermitian Matrices. Montgomery and Dyson shared this discovery, and after, this conjecture is known as pair correlation conjecture.
+
+We will see more recent applications of RMT such as Last Passage Percolation (LPP) and the KPZ universality, but we'll get there when we get there.
+
+\usection{Wigner Semicircle Law}
+
+We state Wigner's Law 
+
+\theorem[semicircle_law]{Wigner's Semicircle Law}{
+    Let $M_n=\{M_{i,j}\}$ be an $n\times n$ matrix, such that $M_{i,j}=M_{j,i}$ and $M_{i\leq j}$ are IID with \[
+    \mathbb{E}[M_{i,j}]=0, \mathbb{E}[M_{i,j}^2]=1.
+    \]
+
+    Let $\lambda_1 \leq ...\leq \lambda_n$ be the eigenvalues of $M_n$, and \[
+    L_n \defeq \frac{1}{n}\sum_{i=1}^{n}\delta_{\lambda_i/\sqrt{n}}
+    \]
+    Then as $n\to \infty$, \[
+    L_n\to \sigma (x) \defeq \frac{1}{2\pi}\sqrt{4-x^2}dx
+    \]
+    weakly almost surely and in $L^p$. 
+}
+
+We shall prove a weaker statement. We assume that $\mathbb{E}[|M_{i,j}|^k]<\infty$, and prove the convergence in probability. That is,\[
+\int f dL_n \to \int f d\sigma
+\]
+in probability for any continuous $f$.
+
+Before we head to the proof, we can generalize the statement for \[
+\mathbb{E}[M_{i,j}]=a, \mathbb{E}[M_{i,j}^2]=b.
+\]
+The second is easy, we can just scale $M_n$ uniformly by $\sqrt{b}$ to get variance $1$. For the shift, we can isolate $M_{i,j}=a+\tilde{M}_{i,j}$. So that $\tilde{M}_n$ is a matrix with known eigenvalue distribution. Now the $n\times n$ matrix\[
+    \begin{bmatrix}
+        a & a& ...& a\\
+        \vdots& \ddots \\
+        a & ... &&a
+    \end{bmatrix}
+\]
+is rank $1$, so the resulting matrix gives interlacing of eigenvalues \[
+...\leq \tilde{\lambda}_{i-1} \leq \lambda_{i-1} \leq \tilde{\lambda}_i \leq\lambda_i \leq ...
+\]
+So everything is controlled except for possible the top and bottom eigenvalues. This is fine as $\delta_{\lambda_i/\sqrt{n}}/n$ is negligible as $n\to \infty$.
+
+\subsection*{Moment Matching Method}
+
+The proof for Wigner's semicircle law is known as the `moment method' and is deconstructed as follows:
+
+Let $\epsilon > 0 $, we want \[
+P(|\int f d L_n - \int f  \sigma dx| > \epsilon )\to 0.
+\]
+We first show this for polynomials, then apply Weierstrauss for a density argument.
+\begin{alemma}{Moment Matching}{moment_semicircle}
+    Let $k\geq 1$. We have \[
+    \mathbb{E}[\int x^k dL_n ]\to \int x^k \sigma(x) dx \defeq \tilde{M}_k.
+    \]
+\end{alemma}
+Next, we have to turn this expected value to statements about probability, thus we need a concentration lemma: 
+
+\begin{alemma}{Concentration}{concentration_semicircle}
+    We have for $k\geq 1$, \[
+    P(|\int x^k dL_n -\int x^k \sigma dx|>\epsilon )\to 0.
+    \]
+\end{alemma}
+
+\begin{proof}[Proof of (weaker version of) Semicircle Law with the Lemmas]
+    Let $f$ be continuous and bounded. We approximate $f$ with $p_n$ in the interval $[-B,B]$, for $B\geq 2$ to be determined later, which is the support of $\sigma(x) dx$ Then we have \begin{align*}
+        &\int f dL_n - \int f \sigma dx \\
+        =&(\int f d_n -\int p_n dL_n) +(\int p_n dL_n-\int p_n\sigma dx) +(\int p_n \sigma dx - \int f \sigma dx)
+    \end{align*}
+    The second term goes to $0$ in probability by the concentration lemma. In the third term, we can restrict the integration to $[-2,2]$ and it goes to $0$ almost surely as $p_n$ converges to $f$. We thus need to show that the first term goes to $0$ in probability. On the domain $[-B,B]$, this is taken care of by the fact that $p_n$ approximates $f$ uniformly.
+
+    Outside $[-B,B]$, we want to show that \[
+    P(\int |x|^k \mathbb{I}_{|x|>B} dL_n >\epsilon) \to 0
+    \]
+    for any $\epsilon$. This will take care of the polynomial integral, and will also take care of the integral in $f$ as $f$ is bounded, thus is bounded above by some $C$.
+
+    To show this, we apply Markov's ineqaulity to get \begin{align*}
+    &P(\int |x|^k \mathbb{I}_{|x|>B} dL_n >\epsilon)\\
+    \leq & \frac{1}{\epsilon} E\left[\int |x|^k \mathbb{I}_{|x|>B} dL_n \right]\\
+    \leq & \frac{1}{\epsilon B^k} E\left[\int |x|^{2k} \mathbb{I}_{|x|>B} dL_n \right].
+\end{align*}
+Taking the limsup as $n\to \infty$, \[
+\limsup_{n\to \infty}P(\int |x|^k \mathbb{I}_{|x|>B} dL_n >\epsilon) \leq \frac{\tilde{M}_{2k}}{\epsilon B^k}.
+\]
+    This bound works for all $k$. We will see in the computation that $\tilde{M}_{2k}\leq 4^k$, so taking $B=5$, we have that the first term is increasing in $k$ but the last term is decreasing in $k$ to $0$. Thus the only way this bound works for all $k$ is that the probability also converges to $0$. 
+\end{proof}
+\begin{remark}
+With a little more work we can prove the convergence in $L^p$/almost sure convergence. 
+\end{remark}
+\subsection*{Moment calculation of distribution}
+We now complete the lemmas of the moment matching method.
+\proposition[]{
+    We have \begin{enumerate}[label=(\alph*)]
+        \item $\tilde{M}_{2k+1}=0$.
+        \item $\tilde{M}_{2k} = \frac{1}{k+1}\binom{2k}{k}$.
+    \end{enumerate}
+}
+The actual computation of this moment of the semicircle law is unenlightening.
+The more experienced combinatorist will recognize $\tilde{M}_{2k}$ as the $k$-th Catalan number $C_k$. There are a few meanings of this $C_k$. For one, it represents the number of Dyck paths of length $2k$. That is, the number of staircase walks from $(0,0)$ to $(k,k)$ that lie in the upper diagonal. It also represents the number of rooted planar trees with $k$ edges (and $k+1$ nodes). This is because we can identify a tree with its Euler tour as a Dyck path (up if going to a child, right if going to parent). 
+
+We give a quick explaination for calculating the number of Dyck paths. 
+The number of paths going from $(0,0)$ to $(k,k)$ without the restriction is $\binom{2k}{k}$. Now we count the number of invalid paths. Suppose a path is invalid, then take the last time it passes the diagonal, then flip the directions of the path right and up. This leads to a path from $(0,0)$ to $(k+1,k-1)$. Similarly, this reflection trick turns every path from $(0,0)$ to $(k+1, k-1)$ to an invalid path from $(0,0)$ to $(k,k)$.
+
+The number of invalid paths is thus $\binom{2k}{k-1}$. So the number of Dyck paths is \[
+\binom{2k}{k}-\binom{2k}{k-1} = \frac{1}{k+1}\binom{2k}{k}.
+\]
+More importantly, we have a trivial bound \[
+C_k \leq 4^k
+\] just by considering the binomial expansion.
+
+We now compute the moments of $L_n$, which is the key of the proof. 
+
+\begin{proof}[Proof of lemma \ref{lemma:moment_semicircle}]
+    The part \[
+    \int x^k \sigma(x) dx = \tilde{M}_k
+    \]
+    is left as an exercise to drain your time on a weekend.
+    We compute the first part \[
+    \int x^k dL_n.
+    \]
+    Recall the definition of $L_n$, which is the discrete measure for the eigenvalues scaled by $1/\sqrt{n}$. This means that the integral of $x^k$ across this measure is equal to \begin{align*}
+        &\sum_i \frac{1}{n}\big(\frac{\lambda_i}{\sqrt{n}} \big) ^k\\
+        = & n^{-k/2-1}\ \rm{Tr} \ M^k
+    \end{align*} 
+    The trace of $M^k$ can be expanded in a $k$-sum as follows \[
+    M_k = \sum_{I} M_{i_1,i_2}M_{i_2,i_3}...M_{i_{k-1},i_k}M_{i_k}M_{i_1},
+    \]
+    where the sum over $I$ runs over all\[
+    I=i_1i_2i_3...i_k,\quad i_j=1,2,3,...,n
+    \]
+    By the linearity of expectation we just need to know \[
+    n^{-k/2-1} \sum_I E\left[M_{i_1,i_2}M_{i_2,i_3}...M_{i_{k-1},i_k}M_{i_k}M_{i_1}\right].
+    \]
+    Now here comes Wigner's insight: imagine a fully connected undirected graph of $n$ nodes and $n(n+1)/2$ including self edges. Then the edges $(i_1,i_2)...(i_k,_1)$ describe a loop in the graph. Moreover, each edge has to appear at least twice in this loop for the corresponding expectation contribution to be non-zero. Suppose an edge appears only once, then by the independence of each $M_{i,j}$ we can factor $\mathbb{E}[M_{i,j}]=0$ out of the expectation.
+
+    Let us break the expectation into two parts. In the extreme case where the number of nodes involved of the graph is maximal, the nodes and edges of the loop form a tree of $k/2+1$ nodes, and $I$ describes an Euler tour. This is known as a Wigner tree. We have argued that there are $C_{k/2}$ of these trees if we do not label the nodes, so up to relabelling of the nodes there are \[
+    C_{k/2}P^n_{k/2+1} = C_{k/2}n^{k/2+1}(1+o(1))
+    \]
+    of these trees. Finally, each of the corresponding expectations factors into some \[
+    \mathbb{E}[M_{i_1,i_2}^2]...\mathbb{E}[M_{i_l,i_{l+1}}^2] = 1
+    \]
+    so the contribution from the trees are \[
+     n^{-k/1-1} C_{k/2}n^{k/2+1}(1+o(1)) = C_{k/2}(1+o(1)).
+    \]
+
+    We now consider the case where the number of nodes is less than $k/2+1$. This takes care of the remaining $k$ is odd case, and the remaining terms of the even $k$.
+
+    The argument is very simple. Fix a number of nodes $q<k/2+1$. Then there are only some finite $K_q$ number of different unlabelled loops with that number of nodes. The number of relabellings of these loops is at most $n^q$. So the contribution is of the order \[
+    n^{-k/2-1+q}K_q \to 0
+    \]as $n\to \infty$.
+    
+\end{proof}
+We now prove the concentration inequality lemma.
+
+\begin{proof}[Proof of \ref{lemma:concentration_semicircle}]
+    There are two ways to approach a concentration inequality. Either use Markov's inequality, or some variant of Markov's inequality. In our case, we use Chebyshev's inequality to get \[
+     \mathbb{P}(|\int x^k d L_n - \mathbb{E}\int x^k  dL_n|>\epsilon) \leq \frac{1}{\epsilon^2} \rm{Var} \int x^k d L_n.
+    \]
+    Because the expected value converges to that of the semicircle law, showing this goes to zero proves the statement. 
+    We have \begin{align*}
+        \rm{Var} \int x^k dL_n &= \frac{1}{n^{k+2}} (\mathbb{E}[(\rm{tr}M^k)^2] - \mathbb{E}[(\rm{tr}M^k)]^2)
+        \\
+        &= n^{-k-2} \left(\mathbb E [\sum_{I,J} T_IT_J] - \sum_{I,J} \mathbb{E}[T_I] \mathbb{E}[T_J]\right) 
+    \end{align*}
+    where \[
+    T_I \defeq M_{i_1,i_2}...M_{i_k,i_1}
+    \] and similarly for $J$ for each sequence $I,J$ of length $k$.
+    By linearity of expectations, we can consider the contribution for each pair $I$ and $J$ separately. If $I$ and $J$ do not share common edges, then the expectation $\mathbb{E}[T_IT_J]$ factors into $\mathbb{E}[T_I]\mathbb{E}[T_J]$ which gives zero contribution. Else, we would have at least one shared edge and (since each edge has at least $2$ multiplicity in each of $I$ and $J$) there can at most be $k/2+k/2-1=k-1$ edges thus $k$ vertices. The number of relabels of these $k$-vertex graphs is bounded by $O(n^k)$ depending on the size of the higher-order moments which gets dominated by $O(n^{-k-2})$ term and goes to zero as $n\to \infty$.
+\end{proof}
+\example[]{
+    Let $M$ be an $n\times m$ matrix of all iid variables of mean $0$ variance $1$.
+    Try to prove the limit distrbution for eigenvalues of $MM^T$ as $n,m\to \infty$ and $n/m\to \alpha$.
+
+    Or whatever, just read the next section.
+}
+

@@ -1,0 +1,42 @@
+\section{Continuation of Semicircle Law}
+We can say statements about the top (resp. bottom) eigenvalue of $M$.
+\corollary[]{
+    We use the Wigner semicircle law setting in Theorem \ref{thm:semicircle_law}. Let $\lambda_{\max}$ be the top eigenvalue of the matrix $M$. Then for any $\epsilon>0$ we have \[
+    \mathbb{P}(\lambda_{\max}< (2-\epsilon)\sqrt{n})\to 0
+    \]
+    as $n\to \infty$.
+}
+\begin{proof}
+    Suppose not. Then take $f$ be a bump function with support on $[2-\epsilon, 2]$. Then \[
+    \mathbb{P}(|\int f dL_n - \int f \sigma dx|>\epsilon) \geq \mathbb{P}(\lambda_{\max}< (2-\epsilon)\sqrt{n})
+    \]
+    for sufficiently small $\epsilon$. This is because conditioned on $\lambda_{\max}<(2-\epsilon)\sqrt{n}$, the integral $f d L_n$ is $0$ and $\sigma dx$ is non-zero.
+\end{proof}
+\corollary[]{
+    We also have \[
+    \mathbb{P}(\lambda_{\max} > (2+\epsilon)\sqrt{n})\to 0.
+    \]
+}
+\begin{proof}
+    We use Markov's inequality \begin{align*}
+        &\mathbb{P}(\lambda_{\max} > (2+\epsilon)\sqrt{n})
+    \\
+    &=\mathbb{P}(\lambda_{\max}^{2k} > (2+\epsilon)^{2k}n^k)
+    \\
+    &\leq \frac{1}{(2+\epsilon)^{2k}}\mathbb{E}\Big[\Big(\frac{\lambda_{\max}}{\sqrt{n}}\Big)^{2k}\Bigg]
+    \\
+    &\leq \frac{N}{(2+\epsilon)^{2k}}\mathbb{E}[\int x^{2k} dL_n]
+    \\
+    &\leq N\frac{(4)^k+o(1)}{(2+\epsilon)^{2k}}
+    \end{align*}
+    This inequality holds for all $k$, so letting $N$ grow sufficiently slowly as $k\to \infty$ gives the result $\to 0$.
+\end{proof}
+\theorem[]{Bai Yin '88}{
+     $\mathbb{E}[M_{i,j}^4]<\infty$ is a sufficient and necessary condition for \[
+    \lambda_{\max}/\sqrt{n} \to 2
+    \]
+    almost surely.
+}
+\begin{remark}
+    To see a non-example, any distribution for $M_{i,j}$ with a heavy polynomial tail. \todo python code
+\end{remark}

@@ -1,0 +1,508 @@
+\documentclass[11pt,openany]{article}
+\usepackage{geometry}
+\geometry{
+	letterpaper,
+	margin=1in
+}
+\usepackage{blindtext}
+\usepackage{tikz,tcolorbox,tikz-3dplot}
+\usepackage{pgfplots}
+\usepgfplotslibrary{fillbetween}
+\usepackage{xcolor}
+\usepackage{amsfonts}
+\usepackage{hyperref} 
+\usepackage{indentfirst}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage[normalem]{ulem}
+\usepackage [english]{babel}
+\usepackage [autostyle, english = american]{csquotes}
+\usepackage{appendix}
+
+\usepackage[ruled,linesnumbered]{algorithm2e}
+\SetKwComment{Comment}{/* }{ */}
+\DontPrintSemicolon 
+\usepackage{tabularx}
+\usepackage{amsmath,amssymb}
+\usepackage{mathtools}
+\usepackage{makecell}
+\graphicspath{ {./images/} }
+\usepackage{enumitem}
+\usepackage{soul}
+\usepackage{mathtools}
+\usepackage{wrapfig}
+\usepackage{mathrsfs}
+\usepackage{centernot}
+\usepackage{amsthm}
+\usepackage{listings}
+\usepackage{biblatex}
+\addbibresource{ref.bib}
+\usepackage{microtype}
+\usepackage{pagenote}
+\usepackage{array}
+\usepackage{xparse}
+
+\usepackage{forloop}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+%\fancyhf[lh]{\itshape Immanuel Kant}
+\fancyhf[ch]{\itshape\thetitle{}}
+\fancyhf[rh]{\theauthor}
+\fancyhf[cf]{--- \thepage ---}
+\tcbuselibrary{theorems,skins,breakable}
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{mystyle}{
+	backgroundcolor=\color{backcolour},   
+	commentstyle=\color{codegreen},
+	keywordstyle=\color{magenta},
+	numberstyle=\tiny\color{codegray},
+	stringstyle=\color{codepurple},
+	basicstyle=\ttfamily\footnotesize,
+	breakatwhitespace=false,         
+	breaklines=true,                 
+	captionpos=b,                    
+	keepspaces=true,                 
+	numbers=left,                    
+	numbersep=5pt,                  
+	showspaces=false,                
+	showstringspaces=false,
+	showtabs=false,                  
+	tabsize=2
+}
+
+\lstset{style=mystyle}
+%% End notes to be printed as sections at the
+%% end of each chapter.
+\renewcommand*{\notedivision}{\section*{\notesname}}
+\renewcommand*{\pagenotesubhead}[1]{}
+
+%\newcommand*{\exercises}{\section*{\exercisename}}
+%%%%%%%%%%%%% For customising the endnote markers. Comment these out if you don't want them.
+% To prefix each note number with the chapter number
+\renewcommand{\thepagenote}{\thechapter-\arabic{pagenote}}
+
+% To have a slightly different formatting for the endnote numbers in the text -- smaller text, sans-serif, square brackets
+\renewcommand\notenumintext[1]{\space{\footnotesize\sffamily[FN-#1]}}
+
+% To have a slightly different formatting for the endnote numbers in the notes section. Just the square brackets and sans-serif; normal size.
+\renewcommand\notenuminnotes[1]{{\sffamily[FN-#1] }}
+% If you want a different name/heading for the end notes
+\renewcommand{\notesname}{End Notes}
+\newcommand{\exercisename}{Exercises}
+\newcounter{thatonetheorem}
+\newcounter{exercisecounter} % continuity of exercises in a section
+\newenvironment{exerciselist}{
+	\begin{enumerate}
+		\setcounter{enumi}{\value{exercisecounter}}
+	}{
+		\setcounter{exercisecounter}{\value{enumi}}
+	\end{enumerate}
+}
+\newenvironment{thatonethmlist}{
+	\begin{enumerate}
+		\setcounter{enumi}{\value{thatonetheorem}}
+	}{
+		\setcounter{thatonetheorem}{\value{enumi}}
+	\end{enumerate}
+}
+\newcommand*{\exercises}{\section*{\exercisename}}
+
+\newcommand\todo{\textcolor{red}{\textbf{TODO: }}}
+%%%%%%%%%%%%% End customisation
+\newcommand{\stackeq}[1]{\stackrel{\mathclap{\normalfont\mbox{\normalfont\tiny {#1}}}}{=}}
+\newcommand{\reals}{\mathbb{R}}
+\newcommand\defeq{\mathrel{\stackrel{\makebox[0pt]{\mbox{\normalfont\tiny def}}}{=}}}
+\makeatletter
+\renewcommand*\env@matrix[1][*\c@MaxMatrixCols c]{%
+  \hskip -\arraycolsep
+  \let\@ifnextchar\new@ifnextchar
+  \array{#1}}
+\makeatother
+
+\newcounter{thmcounter} % continuity of theorem
+
+\newcommand{\definition}[2]{\addtocounter{thmcounter}{1}
+\begin{tcolorbox}[title=Definition {\thesection}.{\arabic{thmcounter}} ({#1}),colframe=black]
+		{#2}\end{tcolorbox}
+
+
+}
+\newcommand{\proposition}[1]{
+	\addtocounter{thmcounter}{1}
+	\begin{tcolorbox}[title=Proposition {\thesection}.{\arabic{thmcounter}},colframe=red!50!blue!20!white,colback=red!35!blue!10!white, coltitle=black]{#1}\end{tcolorbox}
+
+}
+\newcommand{\theorem}[2]{
+\addtocounter{thmcounter}{1}
+\begin{tcolorbox}[title=\color{black}Theorem {\thesection}.{\arabic{thmcounter}} ({#1}),colframe=red!40,colback=red!5!white]{#2}\end{tcolorbox}
+	
+}
+\newcommand{\lemma}[1]{
+\addtocounter{thmcounter}{1}
+\begin{tcolorbox}[title=\color{black}Lemma {\thesection}.{\arabic{thmcounter}},colframe=blue!40,colback=blue!5!white]{#1}\end{tcolorbox}
+	
+}
+\newcommand{\example}[1]{\addtocounter{thmcounter}{1}\begin{tcolorbox}[title=Example {\thesection}.{\arabic{thmcounter}},colframe=yellow!20!white,colback=yellow!10!white,coltitle=black]{#1}\end{tcolorbox}
+
+
+}
+\newcommand{\corollary}[1]{	\addtocounter{thmcounter}{1}\begin{tcolorbox}[]{Corollary {\thesection}.{\arabic{thmcounter}}: {#1}}\end{tcolorbox}
+	
+
+}
+
+
+%%% Eliseu's fix for theorem numbering
+
+% Definition
+\NewTcbTheorem[number within=section, use counter=thmcounter]{adefinition}{Definition}{
+	colframe=black, 
+	separator sign none, 
+	description delimiters parenthesis,breakable}{def}
+% Proposition
+\NewTcbTheorem[number within=section, use counter=thmcounter]{aproposition}{Proposition}{
+	colframe=red!50!blue!20!white,colback=red!35!blue!10!white, coltitle=black,
+	separator sign none, 
+	description delimiters parenthesis,breakable}{prop}
+% Theorem
+\NewTcbTheorem[number within=section, use counter=thmcounter]{atheorem}{Theorem}{
+	colframe=red!40,colback=red!5!white, coltitle=black,
+	separator sign none, 
+	description delimiters parenthesis,breakable}{thm}
+
+% Lemma
+\NewTcbTheorem[number within=section, use counter=thmcounter]{alemma}{Lemma}{
+	colframe=blue!40,colback=blue!5!white, coltitle=black,
+	separator sign none, 
+	description delimiters parenthesis,breakable}{lemma}
+% Example
+\NewTcbTheorem[number within=section, use counter=thmcounter]{aexample}{Example}{
+	colframe=yellow!20!white,colback=yellow!10!white,coltitle=black,
+	separator sign none, 
+	description delimiters parenthesis,breakable}{ex}
+% Corollary
+\NewTcbTheorem[number within=section, use counter=thmcounter]{acorollary}{Corollary}{
+	separator sign none, 
+	description delimiters parenthesis,
+	coltitle=black,
+	attach title to upper={:\ },breakable}{cor}
+
+
+%%% Eliseu's fix for backwards compatibility with Chi's macros
+
+\let\olddefinition\definition
+\let\oldproposition\proposition
+\let\oldtheorem\theorem
+\let\oldexample\example
+\let\oldcorollary\corollary
+\let\oldlemma\lemma
+
+\renewcommand{\definition}[3][\relax]{\ifx\relax#1\olddefinition{#2}{#3}\else \begin{adefinition}{#2}{#1} #3 \end{adefinition} \fi}
+\renewcommand{\proposition}[2][\relax]{\ifx\relax#1\oldproposition{#2}\else \begin{aproposition}{}{#1} #2 \end{aproposition} \fi}
+\renewcommand{\theorem}[3][\relax]{\ifx\relax#1\oldtheorem{#2}{#3}\else \begin{atheorem}{#2}{#1} #3 \end{atheorem} \fi}
+\renewcommand{\example}[2][\relax]{\ifx\relax#1\oldexample{#2}\else \begin{aexample}{}{#1} #2 \end{aexample} \fi}
+\renewcommand{\corollary}[2][\relax]{\ifx\relax#1\oldcorollary{#2}\else \begin{acorollary}{}{#1} #2 \end{acorollary} \fi}
+\renewcommand{\lemma}[2][\relax]{\ifx\relax#1\oldlemma{#2}\else \begin{alemma}{}{#1} #2 \end{alemma} \fi}
+\newtheorem*{remark}{Remark}
+\newtheorem*{notation}{Notation}
+%\newcommand{\exercises}{\section*{\exercisename}}
+%% THIS LINE IS MANDATORY
+\makepagenote
+\newcommand{\sakura}{\begin{tikzpicture}
+    % Define petal colors
+    \definecolor{petalpink}{RGB}{255, 182, 193}
+    \definecolor{petaldark}{RGB}{255, 105, 180}
+    
+    % Draw petals with thinner bases
+    \foreach \angle in {0, 72, 144, 216, 288} {
+        \begin{scope}[rotate=\angle]
+            \fill[petalpink] 
+            (0,0) -- (0.3,-0.1) 
+            .. controls (0.9,0.5) and (0.6,1.5) .. (0,1.3) 
+            .. controls (-0.6,1.5) and (-0.9,0.5) .. (-0.3,-0.1) -- cycle;
+			\draw[white] (0,0.4) edge (0,1);
+
+        \end{scope}
+		
+		
+    }
+    
+    % Add a darker pink center
+    \fill[petaldark] (0,0) circle (0.25);
+
+    % Add stamen dots around the center
+    \foreach \angle in {-36, 36, 108, 180, 252} {
+		\begin{scope}[rotate=\angle]
+            \fill[petaldark] (0,0.45) circle (0.08);
+
+        \end{scope}
+        
+    }
+
+\end{tikzpicture}}
+
+\newcommand{\oldsakura}{\begin{tikzpicture}
+    % Define petal colors
+    \definecolor{petalpink}{RGB}{255, 182, 193}
+    \definecolor{petaldark}{RGB}{255, 105, 180}
+    
+    % Draw petals with thinner bases
+    \foreach \angle in {0, 72, 144, 216, 288} {
+        \begin{scope}[rotate=\angle]
+            \fill[petalpink] 
+            (0,0) -- (0.3,-0.1) 
+            .. controls (0.9,0.5) and (0.6,1.5) .. (0,1.3) 
+            .. controls (-0.6,1.5) and (-0.9,0.5) .. (-0.3,-0.1) -- cycle;
+        \end{scope}
+    }
+    
+    % Add a darker pink center
+    \fill[petaldark] (0,0) circle (0.25);
+
+    % Add stamen dots around the center
+    \foreach \angle in {0, 60, 120, 180, 240, 300} {
+        \fill[petaldark] ([shift=(\angle:0.45)]0,0) circle (0.05);
+    }
+
+    % Add white highlights for detail
+    \foreach \angle in {30, 90, 150, 210, 270, 330} {
+        \fill[white] ([shift=(\angle:0.6)]0,0) circle (0.03);
+    }
+\end{tikzpicture}}
+\newcommand{\sakuraqed}{1}
+\newcommand{\oldqed}{\qedsymbol}
+\renewcommand{\qedsymbol}{\if\sakuraqed1 {\raisebox{-0.5ex}{\resizebox{2.5ex}{2.5ex}{\sakura}}}\else {\oldqed}\fi}
+
+\newcommand{\newsection}{\setcounter{thmcounter}{0}}
+
+
+
+\newcommand{\usection}[1]{\section*{#1}
+\addcontentsline{toc}{section}
+{#1}
+\addtocounter{section}{1}
+%{\protect\numberline{}#1}
+}
+
+\makeatletter
+% -------------- copied from the article class -----------------
+\def\@maketitle{%
+\newpage\null
+% \vskip 2em%            [<-- Comment out default vertical skip
+\vspace*{-0.5cm}%        [<-- Add some negative vertical space
+\begin{center}%
+    \let \footnote \thanks
+    {\LARGE \@title \par}%
+    \vskip 1.5em%
+    {\large \lineskip .5em%
+        \begin{tabular}[t]{c}%
+            \@author
+        \end{tabular}\par
+    }%
+    %\vskip 1em%
+    %{\large \@date}%
+\end{center}%
+\par
+\vskip 1.5em}
+% ------------------------- end copy from article class ------------------
+\makeatother
+
+%\ref{def:label}, \ref{prop:label}, \ref{thm:label}, \ref{ex:label}, \ref{cor:label}.
+% \setcounter{thmcounter}{0}
+% \begin{atheorem}[foor}{bar}{label} or use square brackets before the function, like 
+\setcounter{section}{0}
+\usepackage{titling}
+\predate{}
+\postdate{}
+\date{}
+\title{Marchenko-Pastur Law}
+\author{Chi Li}
+\begin{document}
+\maketitle
+%\printbibliography
+\section{Statement of main theorem}
+\definition{Marchenko-Pastur Distribution}{
+Fix $0< y$. Let $a=(1-\sqrt{y})^2, b=(1+\sqrt{y})^2$.
+We define the \textbf{Marchenko-Pastur Distribution} as \[
+\sigma_y(x)\defeq \sigma(x) \defeq \begin{cases}
+    \frac{1}{2\pi x y}\sqrt{(b-x)(x-a)}, &\rm{if } a\leq x\leq b\\
+    0, & \rm{otherwise.}
+\end{cases}
+\]
+}
+\theorem[MP]{Marchenko-Pastur}{
+    Let $M$ be an $n\times m$ random matrix with i.i.d. entries such that \[
+    \mathbb{E}[M_{i,j}]=0, \mathbb{E}[M_{i,j}^2]=1, \mathbb{E}[M_{i,j}^k]\leq \infty \ \forall k.
+    \]
+    Let $n/m \to y>0$ as $n\to \infty$, and \[
+    d\tilde{\mu} \defeq \sigma_y(x)dx.
+    \]
+    
+    Define $\lambda_1,...,\lambda_n$ to be the eigenvalues of the matrix $MM^T$ counting multiplicity. Then the measure \[
+    L_n\defeq \frac{1}{n}\sum_i \delta_{\lambda_i/m} \to \tilde{\mu}+ \max(0,1-y^{-1})\delta_0
+    \]weakly in probability.
+
+}
+\section{Structure of proof}
+The following lemmas have analogous forms for Wigner's Semicircle Law's moment method proof.
+\begin{alemma}{Moments of Distribution}{moment}
+We have \[
+    \int \sigma_y(x) dx  = \min(1, y^{-1}).
+\]
+
+For $k\geq 1$, We have \[
+\int x^k \sigma_y(x) dx  =  \sum_{r=0}^{k-1}\frac{y^r}{r+1} \binom{k}{r}\binom{k-1}{r}.
+\]
+\end{alemma}
+This is Lemma 3.1 from \cite{BS}. The proof is mainly computational and relies on Vandermonde's identity\footnote{I would have tried to solve B5 on the Putnam this year if I had known any of these techniques.}.
+\begin{remark}
+    Adding $(1-y^{-1})\delta_0$ changes the $0-th$ moment to $1$ and does not affect any of the other moments. There are two ways to see that this point mass term is required. 
+    First, this adjustment is needed to make the distribution integrate to $1$. Another way to see this is when we have $y>1$, $n>m$ and there are at least $n-m$ eigenvalues of $0$ in $MM^T$ just by considering the nullspace of $M^T$. This proportion comes up as a point mass of \[
+    \frac{1}{n}(n-m) \to 1-y^{-1}
+    \] at zero.
+\end{remark}
+\begin{alemma}{Trivial Bound of moment}{}
+    We have \[
+        \sum_{r=0}^{k-1}\frac{y^r}{r+1} \binom{k}{r}\binom{k-1}{r} \leq  \max(y,1)^k 8^k.
+    \]
+\end{alemma}
+
+\begin{proof}
+    This is a generous bound using $\binom{a}{b}\leq 2^a$.
+\end{proof}
+\begin{alemma}{Moments of Eigenvalues}{eigenvalue}
+    Trivially we have $\mathbb{E}[\sum_{i} 1 /n]=1$ (with the convention $0^0=1$).
+    
+    For each $k\geq 1$, We have \[
+        \mathbb{E}\Big[\int x^k dL_n\Big]\to  \sum_{r=0}^{k-1}\frac{y^r}{r+1} \binom{k}{r}\binom{k-1}{r}
+    \]
+    as $n,m\to \infty$.
+\end{alemma}
+\begin{alemma}{Concentration}{concentration}
+    For any $k\geq 1,\epsilon>0$, \[
+    \mathbb{P}\Bigg(\Big|\int x^k dL_n - \mathbb{E}\int x^k dL_n\Big|>\epsilon\Bigg)\to 0.
+    \]
+\end{alemma}
+\begin{proof}[Proof of Theorem \ref{thm:MP} assuming the previous four Lemmas]
+    Let $ \mu \defeq \tilde{\mu}+ \Big(1-\frac{1}{y}\Big)_{+}\delta_0 $. Then all $k-th$ moments of $L_n$ converge to the $k-th$ moments of $\mu$. 
+
+    Now let $\epsilon>0$. We want to show \[
+    \mathbb{P}\left(\Big| \int f d L_n - \int f d \mu \Big|>\epsilon\right)\to 0.
+    \]
+
+    First, by Markov,  \[
+    \mathbb{P}\left(\Big|\int |x^k|\mathbb{I}_{x>B}d L_n\Big|>\epsilon \right)\leq \frac{1}{\epsilon}\mathbb{E}\left[\int |x^k|\mathbb{I}_{x>B}d L_n\right]\leq \frac{1}{\epsilon B^k}\mathbb{E}\left[\int |x^{2k}|\mathbb{I}_{x>B}d L_n\right].
+    \]
+    Taking limsup, \[
+       \limsup_{n\to \infty} \mathbb{P}\left(\Big|\int |x^k|\mathbb{I}_{x>B}d L_n\Big|>\epsilon \right)\leq\frac{\max(y,1)^k8^k}{\epsilon B^k}.
+    \]
+    We take $B$ large enough such that $B>8(y+1)$. Since the right side is increasing in $k$ and the left side is decreasing in $k$, and the bound works for all $k$, the only way this can happen is for \[
+        \mathbb{P}\left(\Big|\int |x^k|\mathbb{I}_{x>B}d L_n\Big|>\epsilon \right)\to 0.
+    \]
+    If needed, we extend the range $[-B,B]$ so that it includes $(a,b)$. Applying Weierstrauss approximation for the function $f$ in this compact region will give weak convergence in probability.
+\end{proof}
+
+\section{Calculation of moments of $L_n$}
+
+Let $k\geq 1$, and $A\defeq MM^T\defeq[a_{i,j}]$.
+Then $a_{i,j}=\sum_{l=1}^m M_{i,l}M_{j,l}$.
+Then we have \begin{align*}
+    \mathbb{E}\left[\int x^k dL_n\right]=&\mathbb{E}\Big[\frac{1}{n} \sum_{i}\frac{\lambda_i^k}{m^k}\Big]\\
+    =& \frac{1}{nm^k}\mathbb{E}\Big[\rm{Tr}A^k\Big]\\
+    =& \frac{1}{nm^k}\mathbb{E}\Big[\sum_{I}S_I],
+\end{align*}
+where for each $I=i_1i_2...i_k$ a string of $k$ integers each between $1$ to $n$ \begin{align*}  
+S_I=& a_{i_1,i_2}a_{i_2,i_3}...a_{i_k,i_1}\\
+=&\sum_{J} M_{i_1,j_1}M_{i_2,j_1}M_{i_2,j_2}M_{i_3,j_2}... M_{i_k,j_k}M_{i_1,j_k}\\
+\defeq & \sum_J T_{I,J},
+\end{align*}
+summed over each $J=j_1...j_k$ strings of $k$ integers each between $1$ to $m$ inclusive. 
+By linearity of expectations, we have \[
+    \mathbb{E}\left[\int x^k dL_n\right]
+    =\frac{1}{nm^k}\sum_{I,J}\mathbb{E}\Big[T_{I,J}\Big].
+\]
+\proposition{
+    In the summation over $I$ and $J$, we can identify this with a unique bipartite graph with nodes $i_l$ and $j_l$, and with $2k$ edges $i_lj_l$, $i_lj_{l-1}$.
+    Moreover, as in Wigner's Semicircle Law, \begin{itemize}
+        \item If at least one edge has multiplicity $1$, the contribution in expectation in zero.
+        \item We can consider graphs with exactly $k+1$ nodes. All other graphs have negligible contribution.
+    \end{itemize}
+}
+\begin{proof}
+    The proof to the first statement is the same. We can factor out the expectation $\mathbb{E}[M_{i,j}]=0$ by independence.
+
+    For the second statement, we remove zero contributions from graphs with multiplicity one edges. The maximum number of nodes that can possibly have non-zero contribution is $k+1$ by the connectedness of the graph (in which case the skeleton is a tree). Fix $N\leq k$. We will show that the contribution of graphs with $N$ vertices have negligible contribution. For each graph, say there are $\alpha$ vertices coming from $I$ and $\beta$ vertices coming from $J$, so up to relabelling the contribution in expectation is \[
+        C(1+o(1))\frac{n^\alpha m^\beta}{nm^k} = C(1+o(1))\frac{y^{a-1}}{m^{k-N+1}}\to 0,
+    \]
+    where $C$ is some constant counting the number of graphs of $\alpha$ edges from $I$ and $\beta$ vertices from $J$.
+\end{proof}
+
+We therefore just need to compute \[
+    \frac{1}{nm^k}\sum_{I,J}\mathbb{E}\Big[T_{I,J}\Big]
+\]
+summed over the $I,J$ such that the corresponding graph is a tree and the contribution in expectation is $1$. We split the sum across graphs with $l+1$ vertices coming from $I$ and $k-l$ vertices coming from $J$ for each $0 \leq l\leq k$.
+Up to relabelling we account for the factor of $(1+o(1))n^{l+1}m^{k-l}=(1+o(1))nm^ky^l$.
+
+Thus we can approximate \[
+    \frac{1}{nm^k}\sum_{I,J}\mathbb{E}\Big[T_{I,J}\Big]\sim \sum_{l=0}^{k-1} y^l\sum_{\substack{\textrm{trees with fixed labels}\\
+    |I|={l+1},|J|=k-l}}1.
+\]
+This is already suggestive of the form of the $k$-th moment. To finish off the proof of the lemma, it suffices to prove the following final result.
+\proposition{
+    The number of trees (with fixed labels) with $l+1$ vertices in $I$ and $k-l$ vertices in $J$ is equal to \[
+    \frac{1}{l+1}\binom{k}{l}\binom{k-1}{l}.
+    \]
+}
+\begin{proof}
+    This proof is heavily inspired by Arnab Ganguly's Lecture Notes \cite{wiscnotes}, with tweaks to shorten the argument and make parallels to Wigner's case.
+    There are two steps to the argument. First we relate each tree to a sequence (similar to Catalan numbers). Then we count the number of such sequences with such property.
+
+    We root the tree at a vertex in $I$. Similar to Wigner's case, we can relate each tree to a sequence of $2k$ ``up" and ``down" symbols, such that at any point in the sequence the count of ``up'' symbols is no less than that of ``down'' symbols. Moreover, if we follow the path of the sequence, we would be at $I$ vertices at any odd position, and $J$ vertices at even positions (before completing the ``up'' or ``down'' operation in the position). Since the sequence creates new $I$ vertices exactly when there is an ``up'' symbol at an even position, the number of ``up'' symbols at even positions is exactly $l$. By parity, the number of ``down'' symbols at odd positions is also exactly $l$. We now have a one-to-one correspondence with the trees and sequences of $2k$ symbols.
+
+    To count the number of such sequences, it is helpful to fix the last symbol to be ``down'' (or else sequence is invalid anyway). The reason for this choice will be made clear in the reflection argument. The number of sequences of length $2k-1$ with $l$ ``up'' symbols in even positions and $l$ ``down'' symbols in odd positions is \[
+    \binom{k-1}{l}\binom{k}{l}.
+    \]
+    We now count the number of invalid sequences. For each invalid sequence, find the last time it reaches $-1$ (i.e. the number of downs is exactly $1$ greater than the number of ups). By parity, this corresponds to a ``down'' symbol at an odd position $2\alpha-1$. We flip the remaining positions in pairs $(2i,2i+1)$, leaving position $2k$ unchanged, according to the following rule:
+    \begin{itemize}
+        \item $(\rm{up,up})\to (\rm{down,down})$
+        \item $(\rm{up,down})\to (\rm{up,down})$
+        \item $(\rm{down,up})\to (\rm{down,up})$
+        \item $(\rm{down,down})\to (\rm{up,up})$
+    \end{itemize}
+    There are a couple observations about this reflection. First, since this subsequence originally connects $-1$ to $1$, the flipped sequence now connects $-1$ to $-3$. That is, the original sequence contains two more ``up''s than ``downs''. Next, we consider the number of ``up' and ``down'' symbols in even and odd positions respectively. The second and third lines do not change anything, first line decreases the number of even `up' symbols and increases the number of odd ``down'' symbols (vice versa for the fourth line). By a pairing the ``up'' and ``down''s of this subsequence, we must have that this operation increases the number of odd ``down'' symbols by $1$ and decreases even ``up'' symbols by $1$. We thus have $l+1$ ``up'' symbols split across the $k$ odd positions and $l-1$ ``down'' symbols split across the $k-1$ even positions. 
+    
+    The number of invalid sequences is thus \[
+        \binom{k-1}{l-1}\binom{k}{l+1}.
+    \]
+    Thus the number of valid sequences is \[
+        \binom{k-1}{l}\binom{k}{l}-\binom{k-1}{l-1}\binom{k}{l+1} = \frac{1}{l+1} \binom{k-1}{l}\binom{k}{l}.
+    \]
+\end{proof}
+\section{Concentration inequality}
+\begin{proof}[Proof of Lemma \ref{lemma:concentration}]
+    Let $\epsilon>0$. We apply Chebyshev's inequality to \begin{align*}
+        \mathbb{P}\Bigg(\Big|\int x^k dL_n - \mathbb{E}\int x^k dL_n\Big|>\epsilon\Bigg)\leq \frac{1}{\epsilon^2} \rm{Var}\int x^k dL_n ,
+    \end{align*}
+    where \begin{align*}
+        \rm{Var}\int x^k dL_n &= \frac{1}{n^2m^{2k}}\left[\mathbb{E}\Big[\sum_{I,J} T_{I,J}\sum_{I',J'} T_{I',J'}\Big]-\Bigg(\mathbb{E}\Big[\sum_{I,J} T_{I,J}\Big]\Bigg)^2\right]\\
+        & = \frac{1}{n^2m^{2k}}\sum_{I,J}\sum_{I',J'}\left[\mathbb{E}\Big[ T_{I,J} T_{I',J'}\Big]-\mathbb{E}\Big[ T_{I,J}\Big]\mathbb{E}\Big[ T_{I',J'}\Big]\right].
+    \end{align*}
+    If the skeletons of the graphs of $I,J$ and $I'J'$ do not share edges, then the expectation of the products is the product of expectations by independence. Else
+    they share an edge. This means that the union of the graphs $(I,J),(I',J')$ has at most $(k+1)+(k+1)-2$ vertices. The number of relabels of these graphs are \[
+    \leq \max(n,m)^{2k}, 
+    \] 
+    so the contribution from these terms is \[
+    O((1+y)^{2k} n^{-2})
+    \]
+    which is negligible as $n\to \infty$.
+\end{proof}
+\printbibliography
+
+\end{document}

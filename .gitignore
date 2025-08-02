@@ -1,0 +1,15 @@
+*.aux
+*.aux
+*.bbl
+*.blg
+*.bcf
+*.bcf
+*.ent
+*.log
+*.out
+*.fdb*
+*.run*
+*.syn*
+*.fls
+*.toc
+*.bib
