@@ -27,6 +27,7 @@
 \usepackage{tabularx}
 \usepackage{amsmath,amssymb}
 \usepackage{mathtools}
+\usepackage{physics}
 \usepackage{makecell}
 \graphicspath{ {./images/} }
 \usepackage{enumitem}
@@ -118,6 +119,8 @@
 
 \newcommand\todo{\textcolor{red}{\textbf{TODO: }}}
 %%%%%%%%%%%%% End customisation
+
+\DeclareMathOperator{\sign}{sgn}
 \newcommand{\stackeq}[1]{\stackrel{\mathclap{\normalfont\mbox{\normalfont\tiny {#1}}}}{=}}
 \newcommand{\reals}{\mathbb{R}}
 \newcommand\defeq{\mathrel{\stackrel{\makebox[0pt]{\mbox{\normalfont\tiny def}}}{=}}}
@@ -307,7 +310,7 @@
 \tableofcontents
 \newcounter{lecture}
 This is a set of notes I took in my final quarter in Northwestern University. I am in the process of digitizing this. Feel free to email me for any suggestions.
-\forloop{lecture}{1}{\value{lecture}<4}
+\forloop{lecture}{1}{\value{lecture}<5}
 {
 	\input{Lectures/Lecture \arabic{lecture}.tex}
 }

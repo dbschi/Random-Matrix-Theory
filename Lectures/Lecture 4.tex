@@ -1,0 +1,220 @@
+\section{Invariant Ensembles}
+Let $\Omega$ be the space of $N\times N$ symmetric matrices. We construct a measure on this space such that it is invariant under orthogonal/unitary transformations.
+I.e. 
+\[
+P(M) = P(OMO^T)
+\]
+or \[
+P(M) = P(UMU^*)
+\]
+for orthogonal $O$ and unitary $U$ respectively.
+
+\begin{adefinition}{}{}
+    We define the (standard) measure on $\Omega$ to be \[
+    dM \defeq \prod_{i<j} dM_{i,j} dM_{i,j} \prod_i dM_{i,i},
+    \]
+    where each $dM_{i,j}$ is the standard Lebesgue measure,
+    thus we can define \[
+    dP(M) = f(M) dM
+    \]
+    where $f$ is also measureable.
+\end{adefinition}
+\example[]{
+    Notice that the trace is invariant under orthogonal/unitary transformations, so define \[
+    Q(t)= a_k t^{2k} + ... +a_1 t + a_0
+    \]
+    an even degree polynomial ($a_k>0$), where $a_0$ is some normalization constant, and define\[
+    P(M)=\exp(-\textrm{Tr}Q(M)) dM
+    \]
+}
+\example[]{
+    We look at a specific example for the unitary ensemble where \[
+    Q(t)= at^2 + b^t + c
+    \]
+    A direct calculation would give \begin{align*}
+        \text{Tr} Q(M) &= a \text{Tr}(M^2) + b \text Tr(M) + c\\
+        & = a\sum_{i=1}^{n}\sum_{l=1}^{n} M_{i,l}M_{l,i} + \sum_{i=1}^{n}M_{i,i} + c\\
+    \end{align*}
+    so that  \[
+    dP(M) = \exp \Bigg[-(a\sum_{i=1}^{n}M_{i,i}^2 + a \sum_{i<j}\Re(M_{i,j})^2) +\Im(M_{i,j})^2 + b\sum_{i}M_{i,i} +c\Bigg].
+    \]
+    If $b=0$, then this reduces to each of the real and imaginary parts are independent and iid distributed.
+    If we further set $a=1$, then they are further normal distributed, we call this the Gaussian unitary ensemble (GUE for short). This is a Wigner matrix distribution. It can in fact be proven that the invariant Wigner ensemble is the GUE.
+}
+\begin{remark}
+    If we apply this to orthogonally invariant ensemble, the analogous Wigner case is called the Gaussian orthogonal ensemble. There are higher dimensional Gaussian invariant ensembles such as the sympletic ensemble (GSE).
+
+    The GOE, GUE, and GSE correspond to $\beta = 1,2,4$ respectively. We will later explain the definition of $\beta$ in this context.
+\end{remark}
+
+\theorem[]{}{
+    We work in the space of Hermitian matrices $M\in \Omega$. Let $\lambda_1,..., \lambda_N$ be the eigenvalues of $M$. Let $f:\Omega\to \reals$ depend only on the eigenvalues of $M$, and $d P(M)\defeq - \textrm{Tr} Q(M) dM$
+    Then \[
+    \mathbb{E}[f(M)] = \int f(M) dP(M) = \frac{1}{Z_n}
+    \int f(\lambda_1,...,\lambda_N)\exp\Bigg(-\sum_i Q(\lambda_i)\Bigg) \prod_{i<j}(\lambda_i - \lambda_j)^2 d \lambda_1 ... d\lambda_N,    
+    \]
+    where $Z_n$ is a noramlization constant.
+    In other words, the density of eigenvalues have joint density\[
+    \frac{1}{Z_n} \underbrace{\exp\Bigg(\sum Q(\lambda_i)\Bigg)}_{\text{Eigenvalues want to be small}}
+    \underbrace{\prod_{i<j}(\lambda_i - \lambda_j)^2}_{\text{Eigenvalues tend to repel}}
+    \]
+}
+%\newcommand{\tr}{\textrm{Tr}}
+\begin{proof}[]
+    First we consider that eigenvalues are invariant under unitary transformations i.e. \[
+     \tr \ Q(M) = \tr \ Q(UMU^*)=\sum_i Q(\lambda_i).
+    \]
+    Thus we decompose \[
+    M \mapsto (D,\bar{U})
+    \]
+    where we have $D$ is a diagonal $n$ matrix, $\bar{U}$ represents the class of unitary matrices mod $T^n = (S^1)^n$, and $UDU^* = M$. The mod condition is required, as eigenvectors are defined up to a constant of $e^{i\theta}$. There is a bit of work to how that this is smooth and well defined, but this \textbf{should} follow from the implicit function theorem (I have not checked) applied to $(D,U)\mapsto M=UDU^*$.
+
+    We hope that \[
+    dM = \psi(D,U) d\lambda_1 ... d\lambda_n dU,
+    \]
+    where $\psi(D,U)$ factorizes separately in the eigenvalues and $U$. The part in $U$ should integrate to a constant, which we will hide under the $Z_n$ normalization factor. The part in $D$ should be the Vandermonde determinant squared.
+
+    We now need to calculate the Jacobian. We use the representation \[M = (M_{1,1},...,M_{n,n},\Re M_{1,2}, \Im M_{1,2},...)\]
+    and \[
+    (D,U) = (\underbrace{\lambda_1,...,\lambda_n}_{\text{diagonal entries of}\ D},\underbrace{p_1,...,p_l}_{l=n^2-n})
+    \]
+
+    The calculation is actually a little bit cumbersome, but we have a trick. Notice that only the determinant of the Jacobian is needed, so we fix $D_0, U_0$, and make the change of variables \[
+    M \mapsto U_0^* M U_0 
+    \]
+    which does not affect the determinant of the Jacobian, and we calculate the enteries of the Jacobian for the particular value of $M_0=U_0D_0U_0^*$.
+    For the first $n$ entries, we have \[
+    \pdv{\lambda_i}U_0^*MU_0   =  U_0^*U_0 \pdv{\lambda_i} D_0 U_0U_0^* = \pdv{\lambda_i} D_0
+    \]
+    as $U$ is independent of the eigenvalues.
+    
+    We also have \[
+    U_0^*\pdv{p_k} M U_0 =  U_0^*\Big(\pdv{p_k} U \Big) DU^*U_0+ U_0^*UD\Big(\pdv{p_k} U^* \Big)U_0
+    =U_0^*\Big(\pdv{p_k} U \Big) D+ D\Big(\pdv{p_k} U^* \Big)U_0
+    \]
+    when evaluated at $M$. \[
+    s_k\defeq U_0^*\pdv{p_k}U,
+    \]
+    since we have \[
+    0 = \pdv{p_k} U^* U =\bigg(\pdv{p_k} U^*\bigg) U  + U^* \bigg(\pdv{p_k}U\bigg),
+    \]
+    \[
+    U_0^*\pdv{p_k} M U_0 = [s_k,D].
+    \]
+
+    Thus the whole Jacobian $\pdv{M}{(\lambda_k,p_k)}$is in the form\[
+    \begin{bmatrix}
+        I_n & 0_{n\times l}\\
+        0_{l\times n } &\{[s_k,D]\}_{k=1,...,l}
+    \end{bmatrix}    
+    \]
+
+    This we just need to ``calculate'' the determinant of the bottom right matrix. But we have since $D$ is diagonal, every of the $n^2-n$ non-zero entries of $[s_k,D]$ is of the form $(\lambda_i - \lambda_j) \alpha$, where $\alpha$ is only dependent of $U_0$ and $k$. Therefore each permutation in the determinant sum will have exactly two of each $(\lambda_i-\lambda_j)$ times some constant dependent on $U_0$. This gives the Vandermonde-style determinant we want.
+\end{proof}
+
+\begin{remark}
+    If we apply this to the GOE, we would get the determinant portion to be \[
+    \prod_{i<j}|\lambda_i - \lambda_j|^1
+    \]
+    instead. This power is the $\beta$ in literature, and the same one mentioned about. 
+\end{remark}
+
+A criticism of the above proof is that we do not know the actual value of $Z_n$, which is a big problem for applying the result. To compute this value, we first need a few results.
+\begin{alemma}{Vandermonde determinant}{}
+    The Vandermonde matrix is given by \[
+    \begin{bmatrix}
+        1 & 1 & ... & 1 \\
+        x_1 & x_2 & ... & x_n \\ 
+        x_1^2& x_2^2 & ... & x_n^2\\
+        \vdots & &\ddots&\vdots\\
+        x_1^{n-1}&x_2^{n-1}&...&x_n^{n-1}
+    \end{bmatrix}
+    \]
+    and has determinant given by \[
+    \prod_{i<j} (x_i-x_j)
+    \]
+\end{alemma}
+The proof of this is by induction. For an intuition,consider the unique factorization of $C[x_1,...,x_n]$, that $(x_i-x_j)$ are prime factors of the determinant. There are no other primes by the counting the degree of the polynomial in each variable, and finally we pray that the constant is 1.
+
+\begin{alemma}{Integrate Out}{integrateout}
+    Let $J_N$ be a $N\times N$ matrix such that \begin{enumerate}
+        \item $J_{i,j} = f(x_i,x_j)$ for some measurable $f: \reals^2\to \mathbb{C}$,
+        \item $\int f(x,y)f(y,z)d\mu(y) =f(x,z)$.
+    \end{enumerate}
+    Then \[
+    \int \det J(x_1,...,x_N) d\mu(x_N) = (d-N+1) \det J_{N-1} (x_1,...,x_{N-1}),
+    \]
+    where \[
+    d \defeq \int f(x,x) d\mu(x).
+    \]
+\end{alemma}
+\begin{proof}[]
+    This is from Anderson, Guionnet and Zeitouni's Introduction to random matrices or Percy Deift's Orthogonal Polynomials and Random Matrices. 
+
+    We apply the permutation definition of the determinant \begin{align*}
+        \int \det J_N d\mu x_N &= \int \sum_{\sigma \in S^n} \sign (\sigma) J_{1,\sigma(1)}...J_{N,\sigma(N)} d\mu \\
+       &=  \int \sum_{\sigma \in S^n}\sign (\sigma)
+        f(x_1,x_{\sigma(1)})...f(x_N,x_{\sigma(N)}) d\mu.
+    \end{align*}
+    We split the sum in $\sigma$ into two cases, the first when $\sigma(N)=N$, and the second $\sigma(N)\neq N$.
+    In the first case \[
+    \sum_{\substack{\sigma\in S^N\\ \sigma(N)=N}}\int
+    \sign (\sigma) f(x_1,x_{\sigma(1)})...f(x_N,x_N) d\mu(x_N) = d \det J_{N-1},
+    \]
+    where we identified each permutation as belonging in $S^{N-1}$ in the canonical way which has the same number of inversions, thus preserves the sign. 
+
+    For the other summation, we let $j \defeq \sigma^{-1}(N),$ such that the integrand becomes \[
+    \sum_{\sigma \in S^n}\sign (\sigma) \prod_{i\neq j,N}
+        f(x_i,x_{\sigma(i)}) \times f(x_j,x_N) f(x_N,x_{\sigma(N)})
+    \]
+    The first product in $i$ is constant in $x_N$, and the second part integrates in $x_N$ to $f(x_j, x_\sigma(N))$. This gives us a total contribution of $-(N-1)\det J_{N-1}$ by looking at the $N-1$ permutations induced by each $\sigma$.
+\end{proof}
+
+
+\begin{proof}[Determination of the value of $Z_n$]
+We have \[
+1 = \mathbb{P}((\lambda_1,...,\lambda_n) \in \reals^n) = \frac{1}{Z_n}\int \exp\bigg(- \sum_{i} Q(\lambda_i)\bigg)\prod_{i<j}(\lambda_i -\lambda_j)^2 d\lambda_i,
+\]
+so all we just need to compute the value of the integral.
+Let $\{\pi_i(x)\}_{x\geq 0}$ be a sequence of monic orthogonal polynomials with respect to the measure $\exp ( -Q(x)) dx$ in $\reals$. I.e. the $i$-th polynomial is of degree $i$. Then \begin{align*}
+    &\exp\bigg(- \sum_{i} Q(\lambda_i)\bigg)\prod_{i<j}(\lambda_i -\lambda_j)^2 \\
+    =&\exp\bigg(- \sum_{i} Q(\lambda_i)\bigg)\det
+    \begin{bmatrix}
+        1 & 1 & ... & 1 \\
+        \lambda_1 & \lambda_2 & ... & \lambda_n \\ 
+        \lambda_1^2& \lambda_2^2 & ... & \lambda_n^2\\
+        \vdots & &\ddots&\vdots\\
+        \lambda_1^{n-1}&\lambda_2^{n-1}&...&\lambda_n^{n-1}
+    \end{bmatrix}^2\\
+    &=\exp\bigg(- \sum_{i} Q(\lambda_i)\bigg)
+    \det \begin{bmatrix}
+        \pi_0(\lambda_1) & \pi_0(\lambda_2) & ... & \pi_0(\lambda_n) \\
+       \pi_1(\lambda_1) & \pi_1(\lambda_2)& ... & \pi_1(\lambda_n) \\
+        \vdots & &\ddots&\vdots\\
+        \pi_{n-1}(\lambda_1)&\pi_{n-1}(\lambda_2)&...&\pi_{n-1}(\lambda_n)
+    \end{bmatrix}^2
+\end{align*}
+Let $\phi_j = \pi_j \exp (-Q(x)/2) /c_j$, where $c_j$ is a normalization constant that makes $\phi_j$ orthonormal functions on $\reals$, then we rewrite\[
+\exp\bigg(- \sum_{i} Q(\lambda_i)\bigg)\prod_{i<j}(\lambda_i -\lambda_j)^2 = \prod_{i}c_i^2 \det \{\phi_{i-1}(\lambda_j)\}^2.
+\]
+The $c_j$ constants are deterministic, so the we only need to compute the determinant.
+\begin{align*}
+    \det \{\phi_{i-1}(\lambda_j)\}^2 &= \det \{\phi_{i-1}(\lambda_j)\}^T \{\phi_{i-1}(\lambda_j)\}\\
+    &= \det \{\sum_{l=1}^{n}\phi_{l-1}(\lambda_i)\phi_{l-1}(\lambda_j)\}.
+\end{align*}
+We now want to apply the integrate out lemma on \[
+k(x,y) \defeq \sum_{l=1}^{n}\phi_{l-1}(x)\phi_{l-1}(y)
+\]
+First we verify the property that \[
+\int k(x,y)k(y,z) dy = \int \sum_{l=1}^{n}\phi_{l-1}(x)\phi_{l-1}(y) \sum_{k=1}^{n}\phi_{k-1}(y)\phi_{k-1}(z) dy = \sum_{l=1}^{n}\phi_{l-1}(x)\phi_{k-1}(z) = k(x,z)
+\] 
+and \[
+\int k(x,x) dy = n
+\]
+by orthonormality of the $\phi$'s.
+Thus applying the integrate out lemma once will give a factor of $1$ the first time. Inductively, we can apply the integrate out lemma on the $n-k$ dimensional space to get factor of $k+1$. This gives a total contribution of $n!$.
+
+Therefore we get \[
+Z_n=n! \prod_i c_i^2
+\]
+\end{proof}
