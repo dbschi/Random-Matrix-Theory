@@ -1,0 +1,174 @@
+\section{Hermite polynomials and Fredholm Determinant}
+
+We need a little bit more machinary for the next theorems.
+\subsection*{Hermite Polynomials}
+reference: Shion Functional Analysis Volume IV
+
+\definition[]{Hermite Polynomial Generating Function}{
+    \[
+    H_N(x)=(-1)^N e^{x^2/2}\dv[n]{x} \bigg(e^{-x^2/2}\bigg)
+    \]   
+}
+\begin{aproposition}[breakable]{}{}
+    
+    Let $\langle f,g\rangle\defeq \int fg e^{-x^2/2}dx$. Then the following hold:
+    \begin{enumerate}
+        \item $H_N$ is a polynomial of degree $N$.
+        \item \textit{(Recurrance)} $H_0(x)=1,H_1(x)=x,H_{N+1}=xH_N(x)-H_N'(x)$.
+        \item $\langle x, H_N^2\rangle=0$ for all $N$.
+        \item \textit{(Orthogonality)} $\langle H_N, H_M\rangle =\sqrt{2\pi} N!\delta_{N,M}$.
+        \item For polynomial $f$ with degree $<N$, $\langle f, H_N\rangle =0$.
+        \item $H_N'=N H_{N-1}$.
+        \item $H_N''-x H_{N}'+NH_N=0$.
+        \item Let $\phi_N=H_N e^{-x^2/4}/\sqrt{\sqrt{2\pi}N!}$. Then $\int \phi_N \phi_Mdx = \delta_{NM}$.
+        \item \textit{(3-term relation/3-functional relation)} $x\phi_N(x) = \sqrt{N+1} \phi_{N+1}(x)+\sqrt{N}\phi_{N-1}(x)$.
+        \item \textit{(Christoffel-Darboux formula)} \[
+            \sum_{k=0}^{N-1}\phi_k(x)\phi_k(y) = \frac{\sqrt{N}(\phi_N(x)\phi_{N-1}(y)-\phi_N(y)\phi_{N-1}(x))}{x-y}.
+        \] 
+        \item \textit{(Integral representation)} \[
+        H_N(x)=\frac{(-i)^N}{\sqrt{2\pi}} e^{x^2/2}\int t^N e^{-t^2/2+itx}dx.
+        \]
+        
+    \end{enumerate}
+
+\end{aproposition}
+\begin{proof}
+    Computational.
+
+
+\end{proof}
+
+
+\subsection*{Laplace Method}
+We want to look at the asymptotics of $\phi_N$. 
+\theorem[]{Laplace Method/ steppest descent/ Riemann Hilbert}{
+    Let $f:[a,b]\to \reals$ be a twice differentiable function with a signal maximal point in $(a,b)$, and \[
+    I_n\defeq \int e^{Nf(x)} dx.
+    \]
+    Then \[
+    I_N \sim \frac{\sqrt{2\pi}}{\sqrt{-Nf''(c)}}e^{Nf(c)}.
+    \]
+}
+\begin{proof}[Sketch of proof]
+    The idea is that any small difference between $f$ will be negligible for large enough $N$, as $e^{Nf(c)}$ will dominate in the integral. So we just need to see what happens in the vicinity of $c$.
+    We Taylor expand about $c$. \begin{align*}
+        f(x) = f(c) +(x-c)\cancelto{0}{f'(c)} + \frac{1}{2}(x-c)^2f''(c) + R(x).
+    \end{align*}
+    Thus \begin{align*}
+        \int e^{Nf(x)} dx =& \int e^{N(f(c)+1/2(x-c)^2f''(c))+NR(x)}dx \\
+        =& e^{Nf(c)}\int_a^b e^{N/2 (x-c)^2 f''(c)+NR(x)}dx \\
+        &\approx \frac{e^{Nf(c)}}{-\sqrt{Nf''(c)}} \int_{\sqrt{-Nf''(c)}(a-c)}^{\sqrt{-Nf''(c)}(b-c)}e^{-y^2/2}dy\\
+        &\sim \frac{\sqrt{2\pi}e^{Nf(c)}}{\sqrt{-Nf''(c)}}
+    \end{align*}
+\end{proof}
+\subsection*{Fredholm Determinants}
+reference: Reed \& Sihon
+
+Fredholm was interested in ODE solutions in integral form. Let $K:[0,1]\times [0,1] \to \reals$ continuous and $\mathcal{K}: \mathcal{C}[0,1]\to \mathcal{C}[0,1]$ that maps \[
+f \mapsto \mathcal{K} f(x) \defeq \int_0^1 f(y) k(x,y)dy.
+\]
+We want to solve for \[
+f(x) = \int_0^1 K(x,y) f(y) dy + g(x) =\mathcal{K}f + g \implies (I-\mathcal{K})f = g.
+\]
+Suppose we can assign a determinant to the operator $I-\mathcal{K}$ then we can invert non zero determinant \[
+f=(I-\mathcal{K})^{-1}g.
+\]
+\definition{Trace}{
+    Let $H$ be a hilbert space, ${A}\in L(H)$ be positive i.e. $\langle Av,v\rangle\geq 0 \forall v\in H$. Let $\{e_i\}$ be an orthonormal basis, the trace of $A$ is defined as \[
+    \tr A \defeq \sum \langle Ae_i e_i\rangle.
+    \]
+    In general \[
+    \tr A \defeq \tr |A| = \tr (\sqrt{AA^*}).
+    \]
+
+    $A$ is \textbf{trace class} if $\tr A$ is finite. The class of trace class operators is $T_1\subseteq L(H)$.
+}
+\newcommand*{\Z}{\makebox[1ex]{\textbf{$\cdot$}}}%
+\begin{alemma}{}{}
+    $T_1$ is a subspace of $L(H)$. We equip $T_1$ with the norm $\|A\|=\tr A$, and $T_1$ is complete with respect to this norm. In other words $(T_1,\|\Z\|_1)$ is Banach.
+\end{alemma}
+\begin{proof}
+    In Reed \& Simon.
+\end{proof}
+\proposition[]{
+    If $A$ is compact self adjoint, \[
+    A\in T_1 \iff \sum_i \lambda_i \text{ is finite.}
+    \]
+}
+\begin{remark}
+    $\|A\|\leq \|\Z\|_1$
+\end{remark}
+
+\definition[]{}{
+    We define $\otimes^N H\defeq\{\phi_1\otimes...\otimes \phi_N\}$ with the inner product\[
+    \langle \phi_1\otimes...\otimes \phi_N, \eta_1\otimes...\otimes \eta_N \rangle = \prod_i \langle \phi_i,\eta_i\rangle.
+    \]
+    $A\in L(H)$ extends to $\otimes^N H$ by \[
+    \gamma^N A(\phi_1\otimes ...\otimes \phi_N)=A\phi_1\otimes...\otimes A\phi_N.
+    \]
+We further define
+    \[
+    \phi_1 \wedge...\wedge \phi_N\defeq\underbrace{\frac{1}{\sqrt{N!}}}_{\text{normalization}} \sum_{\pi\in S_N} \sign \pi \phi_{\pi(1)}\otimes ...\otimes \phi_{\pi(N)}
+    \]
+    and $\bigwedge^N H\defeq \text{span}(\phi_1\wedge...\wedge\phi_N)$
+}
+\proposition[]{
+    We have \[
+    \langle\phi_1\wedge...\wedge \phi_N , \eta_1\wedge..\wedge\eta_N \rangle = \det(\langle\phi_i,\eta_j\rangle).
+    \]
+}
+\proposition[]{
+    Let $\bigwedge^N(A) = \Gamma^N|_{\bigwedge^N}$. Then \[
+    \bigwedge^N(AB)=\bigwedge(A)\bigwedge(B)
+    \]
+}
+As an example, if we have $H$ is $N-$dimensional, then $\bigwedge^N H $ is spanned by $e \defeq e_1\wedge...\wedge e_n$ and that \[
+\langle e , \Gamma^N A e\rangle = \det A.
+\]
+Therefore applying the previous preposition we get (in the most convoluted proof possible)\theorem[]{}{
+   \[
+    \det AB = \det A \det B.
+\]
+}
+\begin{alemma}{}{}
+    Let $A$ be trace class, then $\bigwedge^k (A)$ is trace class with \[
+    \tr(\bigwedge^k(A))\leq \frac{\|A\|_1^k}{k!}
+    \]
+\end{alemma}
+\definition{Fredholm Determinant}{
+    Let $A$ be trace class.
+    The \textbf{Fredholm Determinant} is defined as \[
+    \det (I+A) \defeq \sum_{l=0}^\infty \tr(\bigwedge^l A)
+    \]
+}
+\theorem[]{Fredholm Alternative}{
+    If $\det (I-\mathcal{K})\neq0$. Then there exists a unique solution $f$ to \[
+    (I-\mathcal{K})f=g.
+    \]
+    Moreover, $I-\mathcal{K}$ is invertible if and only if its Fredholm determinant is non-zero.
+}
+
+
+Sounds good, but good luck computing this... instead we can compute it in a different way \begin{alemma}{}{}
+    Let $A$ be an integral operator with $K$ as its kernal. Then \[
+    \tr \bigwedge^k A = \frac{1}{k!} \underbrace{\int\int...\int}_{k \text{ times}} \det_{i,j} K(x_i,x_j) dx_1...dx_k.
+    \]
+\end{alemma}
+\begin{proof}
+    Computation. In volume IV of Reed and Simon. \textcolor{red}{If you find a better proof let me know.}
+\end{proof}
+
+\proposition[]{
+\begin{enumerate}
+    \item $\det(I+\Z )$ is continuous with respect to $\|\Z\|_1$. Moreover, \[
+    |\det(I+A)-\det(I-B)|\leq \|A-B\|_1.
+    \]
+    \item $\det(I+A)\det(I+B)=\det(I+A+B+AB).$
+    \item If $A$ is self adjoint then \[
+    \det I+A = \prod (1+\lambda_j).
+    \]
+\end{enumerate}    
+
+}
+
+Here end a quick catchup for the basics to understand what's to come.

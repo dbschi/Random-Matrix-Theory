@@ -215,6 +215,13 @@ by orthonormality of the $\phi$'s.
 Thus applying the integrate out lemma once will give a factor of $1$ the first time. Inductively, we can apply the integrate out lemma on the $n-k$ dimensional space to get factor of $k+1$. This gives a total contribution of $n!$.
 
 Therefore we get \[
-Z_n=n! \prod_i c_i^2
+Z_n=n! \prod_i c_i^2.
 \]
 \end{proof}
+
+
+\theorem[]{}{
+    Take $\beta =2$, $Q$ a polynomial of even degree. (I.e. we work in unitary invariant ensembles). Let $A\subset \reals$ be compact, then \[
+    \lim_{N\to \infty} \mathbb{P}(\lambda_1/\sqrt{N},\lambda_2/\sqrt{N},...,\lambda_N/\sqrt{N}\notin A/N) = \det(I-K_{\text{sine}})|_{L^2(A)}.
+    \]
+}
