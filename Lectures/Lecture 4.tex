@@ -46,8 +46,7 @@ for orthogonal $O$ and unitary $U$ respectively.
 
     The GOE, GUE, and GSE correspond to $\beta = 1,2,4$ respectively. We will later explain the definition of $\beta$ in this context.
 \end{remark}
-
-\theorem[]{}{
+\theorem[densityofeigenvalues]{}{
     We work in the space of Hermitian matrices $M\in \Omega$. Let $\lambda_1,..., \lambda_N$ be the eigenvalues of $M$. Let $f:\Omega\to \reals$ depend only on the eigenvalues of $M$, and $d P(M)\defeq - \textrm{Tr} Q(M) dM$
     Then \[
     \mathbb{E}[f(M)] = \int f(M) dP(M) = \frac{1}{Z_n}
@@ -55,7 +54,7 @@ for orthogonal $O$ and unitary $U$ respectively.
     \]
     where $Z_n$ is a noramlization constant.
     In other words, the density of eigenvalues have joint density\[
-    \frac{1}{Z_n} \underbrace{\exp\Bigg(\sum Q(\lambda_i)\Bigg)}_{\text{Eigenvalues want to be small}}
+    \frac{1}{Z_n} \underbrace{\exp\Bigg(-\sum Q(\lambda_i)\Bigg)}_{\text{Eigenvalues want to be small}}
     \underbrace{\prod_{i<j}(\lambda_i - \lambda_j)^2}_{\text{Eigenvalues tend to repel}}
     \]
 }
@@ -148,7 +147,7 @@ The proof of this is by induction. For an intuition,consider the unique factoriz
     d \defeq \int f(x,x) d\mu(x).
     \]
 \end{alemma}
-\begin{proof}[]
+\begin{proof}
     This is from Anderson, Guionnet and Zeitouni's Introduction to random matrices or Percy Deift's Orthogonal Polynomials and Random Matrices. 
 
     We apply the permutation definition of the determinant \begin{align*}
@@ -172,6 +171,8 @@ The proof of this is by induction. For an intuition,consider the unique factoriz
 
 
 \begin{proof}[Determination of the value of $Z_n$]
+
+An application of theorem \ref{thm:densityofeigenvalues} is to take $f$ to be an indicator function and find out the density of eigenevluae 
 We have \[
 1 = \mathbb{P}((\lambda_1,...,\lambda_n) \in \reals^n) = \frac{1}{Z_n}\int \exp\bigg(- \sum_{i} Q(\lambda_i)\bigg)\prod_{i<j}(\lambda_i -\lambda_j)^2 d\lambda_i,
 \]
@@ -220,8 +221,42 @@ Z_n=n! \prod_i c_i^2.
 \end{proof}
 
 
-\theorem[]{}{
-    Take $\beta =2$, $Q$ a polynomial of even degree. (I.e. we work in unitary invariant ensembles). Let $A\subset \reals$ be compact, then \[
-    \lim_{N\to \infty} \mathbb{P}(\lambda_1/\sqrt{N},\lambda_2/\sqrt{N},...,\lambda_N/\sqrt{N}\notin A/N) = \det(I-K_{\text{sine}})|_{L^2(A)}.
+From the above calculation, we also get the following result.
+
+\lemma[]{
+    Let $Q$ as above, $\beta=2$, and $A\in \reals$. Then \[
+        \mathbb{P}(\lambda_1,...,\lambda _n\in A) = \frac{1}{n!} \underbrace{\int_A \int_A ... \int A}_{n \text{ times}} \det k_n(\lambda_i,\lambda_j) d\lambda_1 ... d\lambda_n,
     \]
+    where \begin{align*}
+        k_n(x,y) = \sum_{l=0}^{n-1} \phi_l(x)\phi_k(y),
+    \end{align*}
+    and orthonormal polynomials depending on $Q$ described above.
 }
+\begin{remark}
+    We can extrapolate the condition in $A$ to $\lambda_i\in A_i$. Nothing too special.
+\end{remark}
+
+One interesting thing we can do here is consider the probability that all eigenvalues lie outside of $A$. Using inclusion-exclusion principle, we get \begin{align*}
+    \mathbb{P}(\text{no eigenvalues in }A) &=
+    \frac{1}{n!}\int_{A^c}...\int_{A^c} \det k_n \  d\lambda_1 ...d\lambda_n \\
+    &=\frac{1}{n!} \int ... \int (1-\mathbb{I}_A)(\lambda_1) \times ... \times (1-\mathbb{I}_A)(\lambda_n) \det k_n \ d\lambda_1...d\lambda_n\\
+    &=1 - \frac{1}{n!} \int ... \int \Big(\sum_i \mathbb{I}_A(\lambda_i)\Big) \det k_n \  d\lambda_1... d\lambda_n + ...
+\end{align*}
+
+We now apply the \hyperref[lemma:integrateout]{Integrate Out Lemma} on each piece (integrating out everything except $\lambda_i$) to get \begin{align*}
+    \frac{1}{n!} \int...\int \mathbb{I}_A (\lambda_i) \det k_n \ d\lambda_1...d\lambda_n = \frac{(n-1)!}{n!} \int \mathbb{I}_A(\lambda_I)k(\lambda_i,\lambda_i) d\lambda_i.
+\end{align*}
+Similarly for the higher order terms \[
+\frac{1}{n!} \int_{\reals^n} \mathbb{I}_A(\lambda_i) \mathbb{A}\lambda_j \det k_n \ d\lambda_1...d\lambda_n = \frac{(n-2)!}{n!} \iint \det \begin{bmatrix}
+    k_n(\lambda_i,\lambda_i) &k_n(\lambda_i,\lambda_j) \\
+    k_n(\lambda_j,\lambda_i) &k_n(\lambda_j,\lambda_j) d\lambda_i d\lambda_j 
+\end{bmatrix}
+\]
+So that the sum simplifies to \[
+1+\sum_{l=1}^{n}\frac{(-1)^l}{l!} \int_{A^l}
+\det {\{k_n (\lambda_i,\lambda_j )\}}_{i,j=1}^{l} \ d\lambda_1...d\lambda_k.
+\] 
+Now we can apply the intuition of a physicist - suppose that $k_n$ converges to a $k_{\infty}$ with appropriate scaling, then in the limit $n\to \infty$ it should look something like \[
+\to 1+\sum_{l=1}^{\infty}\frac{(-1)^l}{l!}\int \det k_{\infty}(\lambda_i,\lambda_j) \ d\lambda_1... d\lambda_l
+\]
+Which is the Fredholm Determinant. 

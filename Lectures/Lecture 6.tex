@@ -1,0 +1,64 @@
+\section{Bulk and Edge Universality}
+\theorem[]{Bulk Universality}{
+    Take $\beta =2$, $Q$ a polynomial of even degree. (I.e. we work in unitary invariant ensembles). Let $A\subset \reals$ be compact, then \[
+        \lim_{N\to \infty} \mathbb{P}\Bigg(\frac{\lambda_1}{\sqrt{N}},\frac{\lambda_2}{\sqrt{N}},...,\frac{\lambda_N}{\sqrt{N}}\notin \frac{A}{N}\Bigg) = \det(I-K_{\text{sine}})|_{L^2(A)},
+    \]
+    Where $K_{\text{sine}}$ is the sine kernel \[
+    K_{\text{sine}}(x,y) \defeq \begin{cases}
+        \frac{\sin(x-y)}{\pi(x-y)}, & \text{if } x\neq y,\\
+        \frac{1}{\pi}, & \text{if } x=y.
+    \end{cases}
+    \]
+}
+\corollary[]{
+    Set $A=(-t/2,t/2)$. Then the above evaluates to $(1-F)(t)$, where \[
+    1-F \defeq \exp\Big(\int_0^t \frac{\sigma(x)}{x}dx\Big),
+    \]
+    $\sigma$ the soluiton to \[
+    (t\sigma'')^2 + 4t(\sigma' - \sigma)(t\sigma' - \sigma t(\sigma'')^2)=0,
+    \]
+    also known as Painleve V.
+}
+
+\theorem[]{Edge Universality}{
+    Take $\beta =2$, $Q=x^2$. Let $\lambda_{\max}$ be the largest eigenvalue. Then \[
+        \lim_{N\to \infty} \mathbb{P}\Bigg(\Big(\frac{\lambda_{\max}}{\sqrt{N}}-2\Big)N^{2/3}\leq t\Bigg)
+         = \det (I-\mathcal{A})|_{L^2(t,\infty)},
+    \]
+    \[
+    \mathcal{A}\defeq \begin{cases}
+        \frac{A_i(x)A_i'(y)-A_i(y)A_i'(x)}{x-y}, & \text{if } x\neq y,\\
+        1, & \text{if } x=y,
+    \end{cases}
+    \]
+    is the Airy kernel.
+}
+\begin{remark}
+    \[F_2(t)\defeq \det (I-\mathcal{A})|_{L^2(t,\infty)}
+    \]
+    is known as the Tracy-Widom distribution. It has an integral form \[
+    F_2(t) =\exp\Bigg(-\int_{t}^{\infty} (x-t)q^2(x) dx\Bigg),
+    \]
+    where $q$ solves Painleve II.
+\end{remark}
+
+\begin{proof}[Sketch of proofs for both theorems]
+    We start with the equation 
+    \[\mathbb{P}(\text{no eigenvalues in }A) =
+    1+\sum_{l=1}^{n}\frac{(-1)^l}{l!} \int_{A^l}
+    \det {\{k_n (\lambda_i,\lambda_j )\}}_{i,j=1}^{l} \ d\lambda_1...d\lambda_k.
+    \]
+    For bulk universality, we scale $A\mapsto A/\sqrt{n}$. For edge universality, we want $\lambda_{\max}\leq t \implies \lambda_i \leq t \forall i$, so take $A \mapsto (t,\infty)$.
+    
+    For the $K_n$ term, we apply the \hyperref[prop:hermiteproperties]{Christoffel-Darboux formula}, and get the asymptotics of through \hyperref[thm:placherelrotach]{Plancherel-Rotach} to get pointwise convergence to the sine kernel and the Airy kernel respectively (through the first and third equations).
+
+    Through proposition \ref{prop:detcontinuity}, the Fredholm determinant is continuous with respect to the trace class norm. After showing pointwise convergence of the kernel implies convergence in the trace class norm, we are done.
+    
+\end{proof}
+The edge universality is particularly interesting. Recall from a standard probability class the central limit theorem: \theorem[]{Central Limit}{
+    Let $\{X_i\}$ i.i.d with $\mathbb{E}[X_i]=0,\mathbb{E}[X_i^2]=1,$ Then \[
+    \lim_{n\to \infty}\mathbb{P}\Bigg(\Big(\frac{1}{N}\sum_{i=1}^n X_i\Big)n^{1/2}\leq t \Bigg) = \int_{[-\infty,t]} \frac{1}{\sqrt{2\pi}} e^{-u^2} du.
+    \]
+}
+One way to interpret this is that the expected value of the sum of iid standard variables is $0$ with fluctuation scaling as $n^{-1/2}$. Now apply this to the normalized largest eigenvalue $\lambda_{\max}/\sqrt{N}$. We know converges to $2$ almost surely, provided it has a 4-th moment (check \hyperref[thm:baiyin]{Bai Yin's theorem}). This is the analogous strong law of large numbers, but now the fluctuation scales as $n^{-2/3}$, much faster than what we would expect from the Central Limit Theorem!
+
