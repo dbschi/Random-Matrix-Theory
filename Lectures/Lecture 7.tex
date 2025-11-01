@@ -93,6 +93,9 @@ as $(x,y)\to (\infty,\infty)$, along $x=y$?
 \begin{remark}
     You can read \href{https://arxiv.org/pdf/math/9903134}{Johansson} for details on this. (Later, because this spoils the fun)
 \end{remark}
+\begin{aexample}{Longest Increasing Subsequence}{}
+    Fix N. Let $\sigma$ be a permutation of $\{1,...,N\}$ drawn uniformly in $S_N$, and $L_N$ be the longest increasing subsequence of $\sigma$. What is the asymptotic behaviour of $L_N$?  
+\end{aexample}
 
 \subsection*{TASEP is LLP}
 The punchline is that these two problems are the same for exponential and geometric random variables. The first observation is that exponential and geometric random variables are memoryless i.e. \[
@@ -230,11 +233,10 @@ We now rotate this graph 45 degrees (and rescale by $\sqrt{2}$) and superimpose 
 }
 
 
-\subsection*{Solving LLP}
-Our approach is this\footnote{This is not the approach by Ulm.}: We first solve for geometric random variables then extend the result to exponential random variables as a limit of geometric.
+Our approach is to solving LLP is this\footnote{This is not the approach by Ulm.}: We first solve for geometric random variables then extend the result to exponential random variables as a limit of geometric.
 
 Let $w_v \sim \text{Geom}(q)$, $0< q< 1$. That is \[
-\mathbb{P}(w_v=k) = (1-q)^{k-1} q.
+\mathbb{P}(w_v=k) = (1-q)^{k} q.
 \]
 Then we would have for $q=1-1/L$ as $L\to \infty$, $w_v/L \to \exp(1)$.
 
@@ -242,10 +244,40 @@ The value of $L(N-1,N-1)$ only depends on the $N^2$ vertices in the square $(0,0
 M_{x,y} = (w_{(x,y)})
 \]
 with integer entries. The distribution of this matrix is given by \[
-\mathbb{P}(M=A) = \prod_{i,j\leq N} \mathbb{P}(M_{i,j} = a_{i,j}) = (1-q)^{\sum a_{i,j}} \Big(\frac{q}{1-q}\Big)^{N^2}.
+\mathbb{P}(M=A) = \prod_{i,j\leq N} \mathbb{P}(M_{i,j} = a_{i,j}) = (1-q)^{\sum a_{i,j}} q^{N^2}.
 \]
 
 This means that the frequency of each matrix only depends on the sum of the entries. Conditioned on the sum of the entries, the distribution is actually uniform over all possible matrices! So we have \begin{align*}
-    \mathbb{P}(L(N-1,N-1)\leq t) =& \sum_{k=1}^{\infty} \mathbb{P}\Big(L(N-1,N-1) \ |\ \sum m_{i,j}=k\Big)\mathbb{P}\Big(\sum m_{i,j}=k\Big)\\
-    =& \sum_{k=1}^{\infty} \frac{\#\overbrace{ \{L(N-1,N-1) \ |\ \sum m_{i,j}=k\}}^{\text{this is the hard part}}}{\#\underbrace{\{ \sum m_{i,j}=k\}}_{\text{not related to LPP}}} \underbrace{\mathbb{P}\Big(\sum m_{i,j}=k\Big)}_{\text{not related to LLP}}.
+    \mathbb{P}(L(N-1,N-1)\leq t) =& \sum_{k=0}^{\infty} \mathbb{P}\Big(L(N-1,N-1) \ |\ \sum m_{i,j}=k\Big)\mathbb{P}\Big(\sum m_{i,j}=k\Big)\\
+    =& \sum_{k=0}^{\infty} \frac{\#\overbrace{ \{L(N-1,N-1)\leq t \ |\ \sum m_{i,j}=k\}}^{\text{this is the hard part}}}{\#\underbrace{\{ \sum m_{i,j}=k\}}_{\text{not related to LPP}}} \underbrace{\mathbb{P}\Big(\sum m_{i,j}=k\Big)}_{\text{not related to LLP}}.
 \end{align*}
+
+\subsection*{LLP is Longest Increasing Subsequence}
+We now translate the counting problem into longest increasing subsequence. This is a slightly different problem in that we are finding longest increasing subsequences in what is known as \textbf{generalized permutations}. 
+\definition{Generalized Permutation}{
+    Let $A$ be a matrix with non-negative integer entries. The \textbf{generalized permutation} associated with $A$ is defined as the two-line array \[
+    \sigma_A \defeq \left(\begin{array}{ccccccccc}
+        1 & 1 & ... & 1 & 1 & ... & 1&...&N\\
+        \undermat{a_{1,1} \text{ times}}{1 & 1 & ... & 1} & \undermat{a_{1,2} \text{ times}}{2 & ... & 2} &...&N\\
+    \end{array}\right).
+    \] 
+    \\
+    
+    
+}
+\begin{aexample}{}{}
+    Let $A$ be a permutation matrix. Then $\sigma_A$ is in the form \[
+    \begin{bmatrix}
+        1 & 2 &... & N\\
+        \sigma(1) & \sigma(2) & ... &\sigma(N)
+    \end{bmatrix}
+    \]
+    which is the standard two-line representation of a permutation.
+\end{aexample}
+
+\proposition{
+    Given the matrix $M$, $L(N-1,N-1)$ is the length of the longest increasing subsequence of $\sigma_{M^T}$.
+}
+\begin{proof}[Idea of proof]
+    For every path in $\gamma$ from $(0,0)$ to $(N-1,N-1)$, associate to an increasing subseqeunce in $\sigma_{M^T}$ (Hint: just take all the indices the path visited), and the length of the subsequence is the sum of weights. For every increasing subseqeunce, we can extend it to a longer subsequence (for each index $i,j$, we can take all of the columns or none of the columns) and it corresponds to a path with sum of weights equal to the length of the extended subseqeunce.
+\end{proof}

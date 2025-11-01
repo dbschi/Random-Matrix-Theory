@@ -101,6 +101,12 @@
 % If you want a different name/heading for the end notes
 \renewcommand{\notesname}{End Notes}
 \newcommand{\exercisename}{Exercises}
+
+\newcommand\undermat[2]{%
+  \makebox[0pt][l]{$\smash{\underbrace{\phantom{%
+    \begin{matrix}#2\end{matrix}}}_{\text{$#1$}}}$}#2}
+
+	
 \newcounter{thatonetheorem}
 \newcounter{exercisecounter} % continuity of exercises in a section
 \newenvironment{exerciselist}{
