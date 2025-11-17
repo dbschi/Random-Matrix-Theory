@@ -236,15 +236,15 @@ We now rotate this graph 45 degrees (and rescale by $\sqrt{2}$) and superimpose 
 Our approach is to solving LLP is this\footnote{This is not the approach by Ulm.}: We first solve for geometric random variables then extend the result to exponential random variables as a limit of geometric.
 
 Let $w_v \sim \text{Geom}(q)$, $0< q< 1$. That is \[
-\mathbb{P}(w_v=k) = (1-q)^{k} q.
+\mathbb{P}(w_v=k) = (1-q)^{k-1} q.
 \]
-Then we would have for $q=1-1/L$ as $L\to \infty$, $w_v/L \to \exp(1)$.
+Then we would have for $q=1/L$ as $L\to \infty$, $w_v/L \to \exp(1)$.
 
 The value of $L(N-1,N-1)$ only depends on the $N^2$ vertices in the square $(0,0)$ -- $(N-1,N-1)$. For ease of notation, we index everything from $1$ instead of $0$ to have a matrix indexed from $1$ to $N$. We can represent this as a random matrix \[
 M_{x,y} = (w_{(x,y)})
 \]
 with integer entries. The distribution of this matrix is given by \[
-\mathbb{P}(M=A) = \prod_{i,j\leq N} \mathbb{P}(M_{i,j} = a_{i,j}) = (1-q)^{\sum a_{i,j}} q^{N^2}.
+\mathbb{P}(M=A) = \prod_{i,j\leq N} \mathbb{P}(M_{i,j} = a_{i,j}) = (1-q)^{\sum a_{i,j}} \bigg(\frac{q}{1-q}\bigg)^{N^2}.
 \]
 
 This means that the frequency of each matrix only depends on the sum of the entries. Conditioned on the sum of the entries, the distribution is actually uniform over all possible matrices! So we have \begin{align*}
@@ -384,3 +384,37 @@ The inverse operation from $(P,Q)$ to a generalized permutation involves finding
     This is lemma 2.3 in Johansson.
 \end{proof}
 
+
+Now we have 
+\begin{align*}
+    \mathbb{P}(L(N-1,N-1)\leq t) =& \sum_{k=0}^{\infty} \frac{\# \{L(N-1,N-1)\leq t \ |\ \sum m_{i,j}=k\}}{\#\{ \sum m_{i,j}=k\}} \mathbb{P}\Big(\sum m_{i,j}=k\Big)\\
+    =&\sum_{k=0}^{\infty} {\# \{L(N-1,N-1)\leq t \ |\ \sum m_{i,j}=k\}} (1-q)^{k}\bigg(\frac{q}{1-q}\bigg)^{N^2}\\
+    =&\sum_{k=0}^{\infty}(1-q)^{k}\bigg(\frac{q}{1-q}\bigg)^{N^2} \sum_{\text{shapes $\lambda$ of size $k$ with $\lambda_1 \leq t$}} \bigg(\prod_{1\leq i< j\leq N}^{} \frac{\lambda_i -\lambda_j + j-i}{j-i}\bigg)^2
+\end{align*}
+
+Here we can rewrite $h_i = \lambda_i +N - i$, so that we have $h_i$'s are strictly decreasing.
+The expression becomes 
+\begin{align*}
+    &\mathbb{P}(L(N-1,N-1)\leq t)\\ =&\sum_{k=0}^{\infty}
+    \prod_{i=0}^{N-1}\frac{1}{(i!)^2} (1-q)^{k}\bigg(\frac{q}{1-q}\bigg)^{N^2} \sum_{\text{shapes $\lambda$ of size $k$ with $\lambda_1 \leq t$}} \prod_{1\leq i< j\leq N}^{} ({h_i-h_j})^2\\
+    =&\sum_{k=0}^{\infty}
+    \prod_{i=0}^{N-1}\frac{1}{(i!)^2} (1-q)^{k}\bigg(\frac{q}{1-q}\bigg)^{N^2} \sum_{\substack{\text{strictly decreasing $\{h_i\}$},\\ h_1 \leq t+N-1,\\\sum_i h_i = k+N(N-1)/2}} \prod_{1\leq i< j\leq N}^{} ({h_i-h_j})^2 \\
+    =&
+    (1-q)^{-N(N-1)/2}
+    \prod_{i=0}^{N-1}\frac{1}{(i!)^2}\bigg(\frac{q}{1-q}\bigg)^{N^2} \frac{1}{N!} \sum_{\substack{\text{distinct $\{h_i\}$},\\ h_i \leq t+N-1}}\prod_{1\leq i\leq N}^{}(1-q)^{h_i} \prod_{1\leq i< j\leq N}^{} ({h_i-h_j})^2
+\end{align*}
+
+Now we let $q=1/M$ with $M\to \infty$. Then \[
+\mathbb{P}({L(N-1,N-1)}\leq tM) = \mathbb{P}\bigg(\frac{L(N-1,N-1)}{M}\leq t\bigg) \to \mathbb{P}(L^{\exp}(N-1,N-1)\leq t).
+\]
+
+The first few terms are constants that converge to some $Z_N$. The summation in $h_i$ turns into a $N$-integral with each $h_i/M$ ranging from $0$ to $(Mt+N-1)/M \to t$.
+This becomes \begin{align*}   
+&\lim_{M\to \infty} Z_n \bigg(1-\frac{1}{M}\bigg)^{\text{some constant in $M$}} \frac{1}{M^N} \sum_{h_i} \prod_i (1-q)^{M (h_i/M)}  \prod_{i<j} \bigg(\frac{h_i}{M}-\frac{h_j}{M}\bigg)^2  \\=& Z_n \int ... \int_{[0,t]^N} \prod_{i<j} (h_i-h_j)^2  \ e^{-\sum_i h_i} dh_i.
+\end{align*}
+
+Which is *almost* the distribution of eigenvalues we saw before. This is called the Laguerre ensemble, which describes the distribution of eigenvalues of $XX*$.
+
+\begin{remark}
+    With a bit more work we can generalize to $L(N,M)$. It's just dirty work, so I will leave the details to Johansson (and you).
+\end{remark}
